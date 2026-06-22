@@ -49,21 +49,8 @@ const loading = ref(false)
 
 async function handleRegister() {
   error.value = ''
-  loading.value = true
-
-  try {
-    await authStore.register({ name: form.name, email: form.email, password: form.password })
-    router.push('/')
-  } catch (e: any) {
-    const errors = e.response?.data?.errors
-    if (errors) {
-      error.value = Object.values(errors).flat().join(' ')
-    } else {
-      error.value = e.response?.data?.message || 'Registration failed.'
-    }
-  } finally {
-    loading.value = false
-  }
+  loading.value = false
+  router.push('/login')
 }
 </script>
 

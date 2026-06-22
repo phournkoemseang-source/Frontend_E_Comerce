@@ -100,7 +100,7 @@ onMounted(async () => {
    try {
      const res = await api.get(`/products/${route.params.id}`)
      product.value = res.data.data || res.data
-     if (authStore.isAuthenticated) {
+      if (authStore.isLoggedIn) {
        try {
          const wRes = await api.get('/wishlist')
          const wData = wRes.data.data || wRes.data
@@ -123,31 +123,31 @@ async function handleAddToCart() {
 }
 
 async function handleWishlist() {
-  if (!authStore.isLoggedIn) {
-    showToast('Please sign in to use wishlist', 'warn')
-    setTimeout(() => router.push('/login'), 1500)
-    return
-  }
-  wishlisted.value = !wishlisted.value
-  let saved: any[] = []
-  try { saved = JSON.parse(localStorage.getItem('wishlist') || '[]') } catch {}
-  if (wishlisted.value) {
-    const p = product.value!
-    saved.push({
-      id: p.id,
-      product_id: p.id,
-      product: { id: p.id, name: p.name, price: p.price, image: p.image }
-    })
-  } else {
-    saved = saved.filter((i: any) => String(i.product_id) !== String(product.value!.id))
-  }
-  localStorage.setItem('wishlist', JSON.stringify(saved))
-  try {
-    await api.post('/wishlist', { product_id: product.value!.id })
-  } catch {
-    // backend not available, toggled locally
-  }
-}
+    if (!authStore.isLoggedIn) {
+     showToast('Please sign in to use wishlist', 'warn')
+     setTimeout(() => router.push('/login'), 1500)
+     return
+   }
+   wishlisted.value = !wishlisted.value
+   let saved: any[] = []
+   try { saved = JSON.parse(localStorage.getItem('wishlist') || '[]') } catch {}
+   if (wishlisted.value) {
+     const p = product.value!
+     saved.push({
+       id: p.id,
+       product_id: p.id,
+       product: { id: p.id, name: p.name, price: p.price, image: p.image }
+     })
+   } else {
+     saved = saved.filter((i: any) => String(i.product_id) !== String(product.value!.id))
+   }
+   localStorage.setItem('wishlist', JSON.stringify(saved))
+   try {
+     await api.post('/wishlist', { product_id: product.value!.id })
+   } catch {
+     // backend not available, toggled locally
+   }
+ }
 
 async function submitReview() {
   submitting.value = true
