@@ -36,7 +36,7 @@
           <div class="product-actions">
             <button class="btn-add" @click="handleAddToCart(product)">Add to Cart</button>
             <button class="btn-wish" :class="{ active: wishlistIds.includes(product.id) }" @click="handleWishlist(product)">
-              <svg width="16" height="16" viewBox="0 0 24 24" :fill="wishlistIds.includes(product.id) ? '#DC2626' : 'none'" :stroke="wishlistIds.includes(product.id) ? '#DC2626' : '#D1D5DB'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" :fill="wishlistIds.includes(product.id) ? '#111827' : 'none'" :stroke="wishlistIds.includes(product.id) ? '#111827' : '#D1D5DB'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </button>
           </div>
         </div>
@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import api from '../axios'
 import { useAuthStore } from '../stores/useAuthStore'
 import { useCartStore } from '../stores/useCartStore'
@@ -73,6 +73,7 @@ interface WishlistItem {
 }
 
 const router = useRouter()
+const route = useRoute()
 const authStore = useAuthStore()
 const cartStore = useCartStore()
 
@@ -113,6 +114,9 @@ async function loadProducts() {
     products.value = data.data || data
     const cats = [...new Set(products.value.map((p: any) => p.category?.name).filter(Boolean))] as string[]
     categories.value = ['All', ...cats]
+    if (typeof route.query.category === 'string' && categories.value.includes(route.query.category)) {
+      activeCat.value = route.query.category
+    }
   } catch (e) {
     error.value = 'Failed to load products. Make sure Laravel is running.'
   } finally {
@@ -153,7 +157,7 @@ async function handleAddToCart(product: any) {
 async function handleWishlist(product: Product) {
   if (!authStore.isLoggedIn) {
     showToast('Please sign in to use wishlist', 'warn')
-    setTimeout(() => router.push('/login'), 1500)
+    setTimeout(() => router.push({ path: '/login', query: { redirect: route.fullPath } }), 900)
     return
   }
   const toggledOff = wishlistItems.value.find(i => i.product_id === product.id)
@@ -208,7 +212,7 @@ function showToast(message: string, type = 'success') {
 
 .search-input:focus {
   outline: none;
-  border-color: #1D9E75;
+  border-color: #111827;
   box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.1);
 }
 
@@ -236,13 +240,13 @@ function showToast(message: string, type = 'success') {
 }
 
 .cat-btn:hover {
-  border-color: #1D9E75;
-  color: #1D9E75;
+  border-color: #111827;
+  color: #111827;
 }
 
 .cat-btn.active {
-  background: #1D9E75;
-  border-color: #1D9E75;
+  background: #111827;
+  border-color: #111827;
   color: #fff;
 }
 
@@ -266,7 +270,7 @@ function showToast(message: string, type = 'success') {
 }
 
 .product-card.wishlisted {
-  border-color: #FCA5A5;
+  border-color: #D1D5DB;
 }
 
 .product-img {
@@ -306,7 +310,7 @@ function showToast(message: string, type = 'success') {
 
 .product-cat {
   font-size: 0.75rem;
-  color: #1D9E75;
+  color: #111827;
   font-weight: 500;
   margin-bottom: 0.5rem;
 }
@@ -327,7 +331,7 @@ function showToast(message: string, type = 'success') {
 .btn-add {
   flex: 1;
   padding: 0.5rem 0;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -338,7 +342,7 @@ function showToast(message: string, type = 'success') {
 }
 
 .btn-add:hover {
-  background: #0F6E56;
+  background: #000000;
 }
 
 .btn-wish {
@@ -355,13 +359,13 @@ function showToast(message: string, type = 'success') {
 }
 
 .btn-wish:hover {
-  border-color: #FCA5A5;
-  background: #FEF2F2;
+  border-color: #D1D5DB;
+  background: #F3F4F6;
 }
 
 .btn-wish.active {
-  border-color: #FCA5A5;
-  background: #FEF2F2;
+  border-color: #D1D5DB;
+  background: #F3F4F6;
 }
 
 .toast {
@@ -373,19 +377,19 @@ function showToast(message: string, type = 'success') {
   font-size: 0.875rem;
   font-weight: 500;
   z-index: 999;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   box-shadow: var(--shadow-lg);
   animation: slideIn 0.2s ease;
 }
 
 .toast.warn {
-  background: #F59E0B;
+  background: #4B5563;
   color: #fff;
 }
 
 .toast.error {
-  background: #DC2626;
+  background: #111827;
   color: #fff;
 }
 

@@ -29,7 +29,7 @@
           <div class="product-actions">
             <button class="btn-add" @click="addToCart(item)">Add to Cart</button>
             <button class="btn-wish active" @click="removeFromWishlist(item)">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="#DC2626" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#111827" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </button>
           </div>
         </div>
@@ -117,7 +117,7 @@ function showToast(msg: string) {
 }
 
 .product-card.wishlisted {
-  border-color: #FCA5A5;
+  border-color: #D1D5DB;
 }
 
 .product-card:hover {
@@ -174,7 +174,7 @@ function showToast(msg: string) {
 .btn-add {
   flex: 1;
   padding: 0.5rem 0;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -185,15 +185,15 @@ function showToast(msg: string) {
 }
 
 .btn-add:hover {
-  background: #0F6E56;
+  background: #000000;
 }
 
 .btn-wish {
   width: 34px;
   height: 34px;
   border-radius: 6px;
-  border: 1px solid #FCA5A5;
-  background: #FEF2F2;
+  border: 1px solid #D1D5DB;
+  background: #F3F4F6;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -210,7 +210,7 @@ function showToast(msg: string) {
   font-size: 0.875rem;
   font-weight: 500;
   z-index: 999;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   box-shadow: var(--shadow-lg);
   animation: slideIn 0.2s ease;

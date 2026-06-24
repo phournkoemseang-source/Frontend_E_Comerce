@@ -120,13 +120,13 @@ function formatDate(dateString: string) {
 }
 
 .order-badge.completed {
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
 }
 
 .order-badge.cancelled {
-  background: #FEF2F2;
-  color: #DC2626;
+  background: #F3F4F6;
+  color: #111827;
 }
 
 .order-items {

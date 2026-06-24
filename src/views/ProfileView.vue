@@ -160,7 +160,7 @@ function handleLogout() {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   display: flex;
   align-items: center;
@@ -214,14 +214,14 @@ function handleLogout() {
 
 .field input:focus {
   outline: none;
-  border-color: #1D9E75;
+  border-color: #111827;
   box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.1);
 }
 
 .btn-save {
   width: 100%;
   padding: 0.625rem;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   border: none;
   border-radius: var(--radius-sm);
@@ -232,7 +232,7 @@ function handleLogout() {
 }
 
 .btn-save:hover {
-  background: #0F6E56;
+  background: #000000;
 }
 
 .btn-save:disabled {
@@ -254,8 +254,8 @@ function handleLogout() {
 }
 
 .btn-logout:hover {
-  background: #FEF2F2;
+  background: #F3F4F6;
   border-color: #FECACA;
-  color: #DC2626;
+  color: #111827;
 }
 </style>

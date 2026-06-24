@@ -74,7 +74,7 @@ const cartStore = useCartStore()
 }
 
 .brand span {
-  color: #1D9E75;
+  color: #111827;
 }
 
 .nav-links {
@@ -98,7 +98,7 @@ const cartStore = useCartStore()
 }
 
 .nav-link.active {
-  color: #1D9E75;
+  color: #111827;
   background: var(--lumina-accent-mint);
 }
 
@@ -130,7 +130,7 @@ const cartStore = useCartStore()
   position: absolute;
   top: -2px;
   right: -2px;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   font-size: 0.625rem;
   font-weight: 700;
@@ -148,7 +148,7 @@ const cartStore = useCartStore()
   display: inline-flex;
   align-items: center;
   padding: 0.5rem 1rem;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   border-radius: 8px;
   font-size: 0.8125rem;
@@ -158,7 +158,7 @@ const cartStore = useCartStore()
 }
 
 .btn-primary-sm:hover {
-  background: #0F6E56;
+  background: #000000;
 }
 
 .profile-btn {
@@ -169,7 +169,7 @@ const cartStore = useCartStore()
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   display: flex;
   align-items: center;

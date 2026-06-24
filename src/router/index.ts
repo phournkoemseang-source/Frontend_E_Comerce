@@ -21,7 +21,8 @@ const router = createRouter({
     {
       path: '/wishlist',
       name: 'wishlist',
-      component: () => import('../views/WishlistView.vue')
+      component: () => import('../views/WishlistView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/cart',
@@ -31,12 +32,14 @@ const router = createRouter({
     {
       path: '/checkout',
       name: 'checkout',
-      component: () => import('../views/CheckoutView.vue')
+      component: () => import('../views/CheckoutView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/orders',
       name: 'orders',
-      component: () => import('../views/OrdersView.vue')
+      component: () => import('../views/OrdersView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/login',
@@ -51,7 +54,8 @@ const router = createRouter({
     {
       path: '/profile',
       name: 'profile',
-      component: () => import('../views/ProfileView.vue')
+      component: () => import('../views/ProfileView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/account',
@@ -60,6 +64,12 @@ const router = createRouter({
   ],
   scrollBehavior() {
     return { top: 0 }
+  }
+})
+
+router.beforeEach((to) => {
+  if (to.meta.requiresAuth && !localStorage.getItem('token')) {
+    return { path: '/login', query: { redirect: to.fullPath } }
   }
 })
 

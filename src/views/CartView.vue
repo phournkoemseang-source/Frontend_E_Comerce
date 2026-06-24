@@ -69,9 +69,11 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '../axios'
+import { useAuthStore } from '../stores/useAuthStore'
 import { useCartStore } from '../stores/useCartStore'
 
 const router = useRouter()
+const authStore = useAuthStore()
 const cartStore = useCartStore()
 
 const loading = ref(true)
@@ -100,6 +102,12 @@ function removeItem(cartItemId: string | number) {
 }
 
 async function handleCheckout() {
+  if (!authStore.isLoggedIn) {
+    showToast('Sign in to place your order', 'warn')
+    setTimeout(() => router.push({ path: '/login', query: { redirect: router.currentRoute.value.fullPath } }), 900)
+    return
+  }
+
   checkingOut.value = true
   try {
     await api.post('/checkout')
@@ -238,8 +246,8 @@ function showToast(message: string, type = 'success') {
 }
 
 .del-btn:hover {
-  color: #DC2626;
-  background: #FEF2F2;
+  color: #111827;
+  background: #F3F4F6;
 }
 
 .summary-card {
@@ -259,7 +267,7 @@ function showToast(message: string, type = 'success') {
 }
 
 .free {
-  color: #1D9E75;
+  color: #111827;
   font-weight: 600;
 }
 
@@ -280,7 +288,7 @@ function showToast(message: string, type = 'success') {
 .btn-checkout {
   width: 100%;
   padding: 0.75rem;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   border: none;
   border-radius: var(--radius-sm);
@@ -291,7 +299,7 @@ function showToast(message: string, type = 'success') {
 }
 
 .btn-checkout:hover {
-  background: #0F6E56;
+  background: #000000;
 }
 
 .btn-checkout:disabled {
@@ -308,14 +316,19 @@ function showToast(message: string, type = 'success') {
   font-size: 0.875rem;
   font-weight: 500;
   z-index: 999;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   box-shadow: var(--shadow-lg);
   animation: slideIn 0.2s ease;
 }
 
+.toast.warn {
+  background: #4B5563;
+  color: #fff;
+}
+
 .toast.error {
-  background: #DC2626;
+  background: #111827;
   color: #fff;
 }
 

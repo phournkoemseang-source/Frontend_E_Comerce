@@ -48,7 +48,10 @@ async function handleLogin() {
 
   try {
     await authStore.login({ email: form.email, password: form.password })
-    router.push('/')
+    const redirect = typeof router.currentRoute.value.query.redirect === 'string'
+      ? router.currentRoute.value.query.redirect
+      : '/'
+    router.push(redirect)
   } catch (e: any) {
     error.value = e.response?.data?.message || 'Invalid email or password.'
   } finally {
@@ -114,7 +117,7 @@ async function handleLogin() {
 
 .field input:focus {
   outline: none;
-  border-color: #1D9E75;
+  border-color: #111827;
   box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.1);
 }
 
@@ -125,7 +128,7 @@ async function handleLogin() {
 .btn-submit {
   width: 100%;
   padding: 0.75rem;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   border: none;
   border-radius: var(--radius-sm);
@@ -137,7 +140,7 @@ async function handleLogin() {
 }
 
 .btn-submit:hover {
-  background: #0F6E56;
+  background: #000000;
 }
 
 .btn-submit:disabled {
@@ -153,7 +156,7 @@ async function handleLogin() {
 }
 
 .auth-footer a {
-  color: #1D9E75;
+  color: #111827;
   font-weight: 600;
   text-decoration: none;
 }

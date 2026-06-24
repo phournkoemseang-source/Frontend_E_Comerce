@@ -136,7 +136,7 @@ async function placeOrder() {
 .btn-place {
   width: 100%;
   padding: 0.75rem;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   border: none;
   border-radius: var(--radius-sm);
@@ -147,7 +147,7 @@ async function placeOrder() {
 }
 
 .btn-place:hover {
-  background: #0F6E56;
+  background: #000000;
 }
 
 .btn-place:disabled {

@@ -9,12 +9,12 @@
   --lumina-gray-500: #6B7280;
   --lumina-gray-900: #111827;
 
-  --lumina-accent-blue: #E0E7FF;
-  --lumina-accent-blue-text: #3730A3;
-  --lumina-accent-mint: #ECFDF5;
-  --lumina-accent-mint-text: #065F46;
-  --lumina-accent-orange: #FFF7ED;
-  --lumina-accent-orange-text: #9A3412;
+  --lumina-accent-blue: #F3F4F6;
+  --lumina-accent-blue-text: #111827;
+  --lumina-accent-mint: #F3F4F6;
+  --lumina-accent-mint-text: #111827;
+  --lumina-accent-orange: #F9FAFB;
+  --lumina-accent-orange-text: #374151;
 
   --color-background: var(--lumina-white);
   --color-surface: var(--lumina-gray-50);

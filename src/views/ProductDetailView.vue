@@ -22,7 +22,7 @@
           <div class="action-row">
             <button class="btn-cart" @click="handleAddToCart">Add to Cart</button>
             <button class="btn-wish" :class="{ active: wishlisted }" @click="handleWishlist">
-              <svg width="20" height="20" viewBox="0 0 24 24" :fill="wishlisted ? '#DC2626' : 'none'" :stroke="wishlisted ? '#DC2626' : '#9CA3AF'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" :fill="wishlisted ? '#111827' : 'none'" :stroke="wishlisted ? '#111827' : '#9CA3AF'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </button>
           </div>
         </div>
@@ -41,7 +41,7 @@
           </button>
         </div>
         <div v-else class="review-login-hint">
-          <RouterLink to="/login">Sign in</RouterLink> to write a review.
+          <RouterLink :to="{ path: '/login', query: { redirect: route.fullPath } }">Sign in</RouterLink> to write a review.
         </div>
 
         <div v-if="!product.reviews?.length" class="no-reviews">No reviews yet.</div>
@@ -125,7 +125,7 @@ async function handleAddToCart() {
 async function handleWishlist() {
     if (!authStore.isLoggedIn) {
      showToast('Please sign in to use wishlist', 'warn')
-     setTimeout(() => router.push('/login'), 1500)
+     setTimeout(() => router.push({ path: '/login', query: { redirect: route.fullPath } }), 900)
      return
    }
    wishlisted.value = !wishlisted.value
@@ -236,7 +236,7 @@ function showToast(message: string, type = 'success') {
 
 .product-cat {
   font-size: 0.8125rem;
-  color: #1D9E75;
+  color: #111827;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.03em;
@@ -265,7 +265,7 @@ function showToast(message: string, type = 'success') {
 
 .btn-cart {
   padding: 0.75rem 1.5rem;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   border: none;
   border-radius: var(--radius-sm);
@@ -276,7 +276,7 @@ function showToast(message: string, type = 'success') {
 }
 
 .btn-cart:hover {
-  background: #0F6E56;
+  background: #000000;
 }
 
 .btn-wish {
@@ -293,13 +293,13 @@ function showToast(message: string, type = 'success') {
 }
 
 .btn-wish:hover {
-  border-color: #FCA5A5;
-  background: #FEF2F2;
+  border-color: #D1D5DB;
+  background: #F3F4F6;
 }
 
 .btn-wish.active {
-  border-color: #FCA5A5;
-  background: #FEF2F2;
+  border-color: #D1D5DB;
+  background: #F3F4F6;
 }
 
 .reviews-section {
@@ -338,7 +338,7 @@ function showToast(message: string, type = 'success') {
 }
 
 .star.filled {
-  color: #F59E0B;
+  color: #4B5563;
 }
 
 .review-textarea {
@@ -356,13 +356,13 @@ function showToast(message: string, type = 'success') {
 
 .review-textarea:focus {
   outline: none;
-  border-color: #1D9E75;
+  border-color: #111827;
 }
 
 .btn-review {
   margin-top: 0.75rem;
   padding: 0.5rem 1.25rem;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   border: none;
   border-radius: var(--radius-sm);
@@ -373,7 +373,7 @@ function showToast(message: string, type = 'success') {
 }
 
 .btn-review:hover {
-  background: #0F6E56;
+  background: #000000;
 }
 
 .btn-review:disabled {
@@ -388,7 +388,7 @@ function showToast(message: string, type = 'success') {
 }
 
 .review-login-hint a {
-  color: #1D9E75;
+  color: #111827;
   font-weight: 600;
 }
 
@@ -419,7 +419,7 @@ function showToast(message: string, type = 'success') {
 }
 
 .review-stars {
-  color: #F59E0B;
+  color: #4B5563;
   font-size: 0.875rem;
 }
 
@@ -438,19 +438,19 @@ function showToast(message: string, type = 'success') {
   font-size: 0.875rem;
   font-weight: 500;
   z-index: 999;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   box-shadow: var(--shadow-lg);
   animation: slideIn 0.2s ease;
 }
 
 .toast.warn {
-  background: #F59E0B;
+  background: #4B5563;
   color: #fff;
 }
 
 .toast.error {
-  background: #DC2626;
+  background: #111827;
   color: #fff;
 }
 

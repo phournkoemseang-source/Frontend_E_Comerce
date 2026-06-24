@@ -111,7 +111,7 @@ async function handleRegister() {
 
 .field input:focus {
   outline: none;
-  border-color: #1D9E75;
+  border-color: #111827;
   box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.1);
 }
 
@@ -122,7 +122,7 @@ async function handleRegister() {
 .btn-submit {
   width: 100%;
   padding: 0.75rem;
-  background: #1D9E75;
+  background: #111827;
   color: #fff;
   border: none;
   border-radius: var(--radius-sm);
@@ -134,7 +134,7 @@ async function handleRegister() {
 }
 
 .btn-submit:hover {
-  background: #0F6E56;
+  background: #000000;
 }
 
 .btn-submit:disabled {
@@ -150,7 +150,7 @@ async function handleRegister() {
 }
 
 .auth-footer a {
-  color: #1D9E75;
+  color: #111827;
   font-weight: 600;
   text-decoration: none;
 }
