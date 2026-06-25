@@ -49,8 +49,22 @@ const loading = ref(false)
 
 async function handleRegister() {
   error.value = ''
-  loading.value = false
-  router.push('/login')
+  loading.value = true
+
+  if (!form.name.trim() || !form.email.trim() || !form.password.trim()) {
+    error.value = 'All fields are required.'
+    loading.value = false
+    return
+  }
+
+  try {
+    await authStore.register({ name: form.name, email: form.email, password: form.password })
+    router.push('/')
+  } catch (e: any) {
+    error.value = e.response?.data?.message || 'Registration failed. Please try again.'
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 

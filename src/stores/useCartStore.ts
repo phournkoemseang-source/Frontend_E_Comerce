@@ -20,8 +20,15 @@ export interface CartItem {
   product: CartProduct
 }
 
+function loadFromStorage(): CartItem[] {
+  try {
+    const saved = localStorage.getItem('cart')
+    return saved ? JSON.parse(saved) : []
+  } catch { return [] }
+}
+
 export const useCartStore = defineStore('cart', () => {
-  const items = ref<CartItem[]>([])
+  const items = ref<CartItem[]>(loadFromStorage())
 
   const count = computed(() => items.value.reduce((sum, item) => sum + item.quantity, 0))
   const subtotal = computed(() => items.value.reduce((sum, item) => sum + item.product.price * item.quantity, 0))
@@ -32,8 +39,7 @@ export const useCartStore = defineStore('cart', () => {
 
   async function fetchCart() {
     if (!localStorage.getItem('token')) {
-      const saved = localStorage.getItem('cart')
-      if (saved) items.value = JSON.parse(saved)
+      items.value = loadFromStorage()
       return
     }
     try {
@@ -41,9 +47,9 @@ export const useCartStore = defineStore('cart', () => {
       const data = res.data.data || res.data
       items.value = data.items || data
     } catch {
-      const saved = localStorage.getItem('cart')
-      if (saved) items.value = JSON.parse(saved)
+      items.value = loadFromStorage()
     }
+    persist()
   }
 
   function persist() {

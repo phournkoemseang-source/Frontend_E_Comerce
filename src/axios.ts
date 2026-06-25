@@ -31,7 +31,10 @@ api.interceptors.response.use(
         if (error.response?.status === 401) {
             localStorage.removeItem('token')
             localStorage.removeItem('user')
-            window.location.href = '/login'
+            // lazy import to avoid circular dependency
+            import('./router/index').then(router => {
+                router.default.push('/login')
+            })
         }
         return Promise.reject(error)
     }

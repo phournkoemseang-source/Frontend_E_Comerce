@@ -71,6 +71,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/useAuthStore'
+import api from '../axios'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -85,7 +86,10 @@ const savingPw = ref(false)
 const pwSuccess = ref(false)
 const pwError = ref('')
 
-onMounted(() => {
+onMounted(async () => {
+  if (!authStore.user) {
+    await authStore.fetchProfile()
+  }
   if (authStore.user) {
     profileForm.name = authStore.user?.name || ''
     profileForm.email = authStore.user.email
@@ -98,7 +102,7 @@ async function saveProfile() {
   savingProfile.value = true
 
   try {
-    authStore.updateProfile({
+    await authStore.updateProfile({
       name: profileForm.name,
       email: profileForm.email,
     })
@@ -112,20 +116,33 @@ async function saveProfile() {
   }
 }
 
-function changePassword() {
+async function changePassword() {
   pwSuccess.value = false
   pwError.value = ''
+  savingPw.value = true
 
   if (pwForm.new_password !== pwForm.confirm_password) {
     pwError.value = 'New passwords do not match.'
+    savingPw.value = false
     return
   }
 
-  pwSuccess.value = true
-  pwForm.current_password = ''
-  pwForm.new_password = ''
-  pwForm.confirm_password = ''
-  setTimeout(() => { pwSuccess.value = false }, 3000)
+  try {
+    await api.put('/profile', {
+      current_password: pwForm.current_password,
+      new_password: pwForm.new_password,
+      new_password_confirmation: pwForm.confirm_password,
+    })
+    pwSuccess.value = true
+    pwForm.current_password = ''
+    pwForm.new_password = ''
+    pwForm.confirm_password = ''
+    setTimeout(() => { pwSuccess.value = false }, 3000)
+  } catch (e: any) {
+    pwError.value = e.response?.data?.message || 'Failed to update password.'
+  } finally {
+    savingPw.value = false
+  }
 }
 
 function handleLogout() {

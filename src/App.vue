@@ -12,16 +12,18 @@
         </div>
 
         <div class="nav-actions">
-          <RouterLink to="/cart" class="cart-btn">
+          <button class="cart-btn" @click="toggleCart">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
             <span v-if="cartStore.count > 0" class="cart-badge">{{ cartStore.count }}</span>
-          </RouterLink>
+          </button>
 
           <RouterLink v-if="!authStore.isLoggedIn" to="/login" class="btn-primary-sm">Sign In</RouterLink>
           <RouterLink v-else to="/profile" class="profile-btn">
             <span class="avatar">{{ authStore.user?.name?.charAt(0).toUpperCase() }}</span>
           </RouterLink>
         </div>
+
+        <CartDropdown :visible="cartOpen" @close="cartOpen = false" />
       </div>
     </nav>
 
@@ -34,12 +36,29 @@
 </template>
 
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { ref, onMounted } from 'vue'
+import { RouterView, RouterLink } from 'vue-router'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { useCartStore } from '@/stores/useCartStore'
+import CartDropdown from '@/components/shop/CartDropdown.vue'
 
 const authStore = useAuthStore()
 const cartStore = useCartStore()
+const cartOpen = ref(false)
+
+function toggleCart() {
+  cartOpen.value = !cartOpen.value
+}
+
+onMounted(async () => {
+  if (authStore.token && !authStore.user) {
+    try {
+      await authStore.fetchProfile()
+    } catch {
+      authStore.logout()
+    }
+  }
+})
 </script>
 
 <style scoped>
