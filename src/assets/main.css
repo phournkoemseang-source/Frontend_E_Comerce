@@ -58,6 +58,7 @@
 }
 
 .badge-private {
+  display: none !important;
   font-size: 0.6875rem;
   font-weight: 600;
   padding: 0.125rem 0.625rem;

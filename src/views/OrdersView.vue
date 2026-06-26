@@ -3,7 +3,7 @@
     <!-- ── Cart Section ── -->
     <div v-if="cartStore.items.length > 0" class="section">
       <div class="page-header">
-        <h2 class="page-title">Current Cart</h2>
+        <h2 class="page-title">{{ i18n.t('orders.currentCart') }}</h2>
       </div>
 
       <div class="cart-layout">
@@ -34,23 +34,23 @@
 
         <div class="summary-card">
           <div class="summary-row">
-            <span>Subtotal ({{ cartStore.count }} items)</span>
+            <span>{{ i18n.t('orders.subtotal') }} ({{ cartStore.count }} {{ i18n.t('home.items') }})</span>
             <span>${{ cartStore.subtotal.toFixed(2) }}</span>
           </div>
           <div class="summary-row">
-            <span>Shipping</span>
-            <span class="free">Free</span>
+            <span>{{ i18n.t('orders.shipping') }}</span>
+            <span class="free">{{ i18n.t('orders.free') }}</span>
           </div>
           <div class="summary-divider"></div>
           <div class="summary-total">
-            <span>Total</span>
+            <span>{{ i18n.t('orders.total') }}</span>
             <span>${{ cartStore.total }}</span>
           </div>
           <button class="btn-place-order" :disabled="checkingOut" @click="handleCheckout">
-            {{ checkingOut ? 'Placing order...' : 'Place Order' }}
+            {{ checkingOut ? 'Placing order...' : i18n.t('orders.placeOrder') }}
           </button>
           <p v-if="!authStore.isLoggedIn" class="login-hint">
-            <RouterLink to="/login" class="login-link">Sign in</RouterLink> to place your order
+            <RouterLink to="/login" class="login-link">Sign in</RouterLink> {{ i18n.t('orders.signInToPlace') }}
           </p>
         </div>
       </div>
@@ -60,24 +60,24 @@
     <div class="section">
       <div class="page-header">
         <h2 class="page-title">
-          Order History
+          {{ i18n.t('orders.orderHistory') }}
           <span v-if="authStore.isLoggedIn" class="badge-private">Private</span>
         </h2>
       </div>
 
       <div v-if="!authStore.isLoggedIn" class="empty-state">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        <p><RouterLink to="/login" class="login-link">Sign in</RouterLink> to view your order history.</p>
+        <p><RouterLink to="/login" class="login-link">Sign in</RouterLink> {{ i18n.t('orders.signInToHistory') }}</p>
       </div>
 
-      <div v-else-if="loadingOrders" class="loading">Loading orders...</div>
+      <div v-else-if="loadingOrders" class="loading">{{ i18n.t('orders.loadingOrders') }}</div>
 
       <div v-else-if="ordersError" class="error-msg">{{ ordersError }}</div>
 
       <div v-else-if="orders.length === 0" class="empty-state">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        <p>No orders yet.</p>
-        <RouterLink to="/products" class="btn-primary">Start Shopping</RouterLink>
+        <p>{{ i18n.t('orders.noOrders') }}</p>
+        <RouterLink to="/products" class="btn-primary">{{ i18n.t('orders.startShopping') }}</RouterLink>
       </div>
 
       <div v-else class="orders-list">
@@ -119,10 +119,12 @@ import { useRouter } from 'vue-router'
 import api from '../axios'
 import { useAuthStore } from '../stores/useAuthStore'
 import { useCartStore } from '../stores/useCartStore'
+import { useI18nStore } from '../stores/useI18nStore'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const cartStore = useCartStore()
+const i18n = useI18nStore()
 
 const checkingOut = ref(false)
 const toast = ref<{ message: string; type: string } | null>(null)
@@ -166,7 +168,7 @@ async function fetchOrders() {
     const data = res.data.data || res.data
     orders.value = data.data || data
   } catch (e: any) {
-    ordersError.value = e.response?.data?.message || 'Could not load orders.'
+    ordersError.value = 'Could not load orders. Please try again later.'
     orders.value = []
   } finally {
     loadingOrders.value = false
@@ -198,12 +200,18 @@ async function handleCheckout() {
 
   checkingOut.value = true
   try {
-    await api.post('/checkout')
+    await api.post('/checkout', {
+      items: cartStore.items.map(item => ({
+        product_id: item.id,
+        quantity: item.quantity,
+        price: item.product.price
+      }))
+    })
   } catch {
     // backend not available, proceed locally
   }
   cartStore.clearCart()
-  showToast('Order placed successfully!')
+  showToast(i18n.t('orders.successMsg'))
   await fetchOrders()
   checkingOut.value = false
 }

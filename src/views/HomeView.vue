@@ -3,9 +3,9 @@
     <section class="hero-shell">
       <div class="hero-media" :style="heroStyle">
         <div class="hero-copy">
-          <span class="eyebrow">Fresh from admin catalog</span>
-          <h1>Shop</h1>
-          <p>Browse every product first. Save favorites and reviews after sign in.</p>
+          <span class="eyebrow">{{ i18n.t('home.eyebrow') }}</span>
+          <h1>{{ i18n.t('home.shop') }}</h1>
+          <p>{{ i18n.t('home.subtitle') }}</p>
         </div>
         <div class="runway-track" aria-hidden="true">
           <div class="runway-line">
@@ -24,12 +24,12 @@
       <div class="shop-panel">
         <div class="panel-head">
           <div>
-            <h2>Give All You Need</h2>
-            <p>{{ products.length }} live products divided by category</p>
+            <h2>{{ i18n.t('home.giveNeed') }}</h2>
+            <p>{{ products.length }} {{ i18n.t('home.liveProducts') }}</p>
           </div>
           <label class="search-box" aria-label="Search products">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input v-model="searchQuery" type="search" placeholder="Search products" />
+            <input v-model="searchQuery" type="search" :placeholder="i18n.t('home.searchPlaceholder')" />
           </label>
         </div>
 
@@ -38,9 +38,9 @@
 
         <div v-else class="catalog-layout">
           <aside class="category-rail">
-            <h3>Category</h3>
+            <h3>{{ i18n.t('home.category') }}</h3>
             <button class="category-btn" :class="{ active: activeCat === 'All' }" @click="activeCat = 'All'">
-              <span>All Product</span>
+              <span>{{ i18n.t('home.allProduct') }}</span>
               <strong>{{ products.length }}</strong>
             </button>
             <button
@@ -57,16 +57,16 @@
 
           <div class="product-space">
             <div v-if="visibleProducts.length === 0" class="empty-state compact">
-              <p>No products found.</p>
+              <p>{{ i18n.t('home.noProductsFound') }}</p>
             </div>
 
             <section v-for="group in visibleGroups" :key="group.name" class="category-section">
               <div class="section-heading">
                 <div>
-                  <span>{{ group.items.length }} items</span>
+                  <span>{{ group.items.length }} {{ i18n.t('home.items') }}</span>
                   <h3>{{ group.name }}</h3>
                 </div>
-                <RouterLink :to="{ path: '/products', query: { category: group.name } }">View category</RouterLink>
+                <RouterLink :to="{ path: '/products', query: { category: group.name } }">{{ i18n.t('home.viewCategory') }}</RouterLink>
               </div>
 
               <div class="products-grid">
@@ -88,15 +88,15 @@
                       <span class="star">★</span>
                       <template v-if="ratingSummary(product).count">
                         <span>{{ ratingSummary(product).average.toFixed(1) }}</span>
-                        <small>({{ ratingSummary(product).count }} reviews)</small>
+                        <small>({{ ratingSummary(product).count }} {{ i18n.t('home.reviews') }})</small>
                       </template>
-                      <span v-else>No reviews</span>
+                      <span v-else>{{ i18n.t('home.noReviews') }}</span>
                     </button>
                     <div class="product-foot">
                       <strong>${{ Number(product.price).toFixed(2) }}</strong>
                       <div class="action-row">
-                        <button class="btn-add" @click="handleAddToCart(product)">Add to Cart</button>
-                        <button class="btn-buy" @click="handleBuyNow(product)">Buy Now</button>
+                        <button class="btn-add" @click="handleAddToCart(product)">{{ i18n.t('home.addToCart') }}</button>
+                        <button class="btn-buy" @click="handleBuyNow(product)">{{ i18n.t('home.buyNow') }}</button>
                       </div>
                     </div>
                   </div>
@@ -176,6 +176,7 @@ import ProductSkeletonGrid from '../components/shop/ProductSkeletonGrid.vue'
 import { fashionEditorialImage, heroBannerImage } from '../assets/images'
 import { useAuthStore } from '../stores/useAuthStore'
 import { useCartStore } from '../stores/useCartStore'
+import { useI18nStore } from '../stores/useI18nStore'
 import { imageUrl, ratingSummary } from '../utils/catalog'
 
 interface Review {
@@ -201,6 +202,7 @@ const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
 const cartStore = useCartStore()
+const i18n = useI18nStore()
 
 const products = ref<Product[]>([])
 const wishlistItems = ref<WishlistItem[]>([])
@@ -342,18 +344,26 @@ function showToast(message: string, type = 'success') {
 }
 
 .hero-shell {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
   background: var(--lumina-white);
-  border: 1px solid var(--lumina-gray-200);
-  border-radius: 8px;
+  border-top: 1px solid var(--lumina-gray-200);
+  border-bottom: 1px solid var(--lumina-gray-200);
   overflow: hidden;
   box-shadow: var(--shadow-soft);
 }
 
 .hero-media {
-  min-height: 360px;
-  background:
-    linear-gradient(90deg, rgba(17, 24, 39, 0.28), rgba(255, 255, 255, 0.08)),
-    linear-gradient(135deg, #f9fafb 0%, #e5e7eb 52%, #ffffff 100%);
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: auto;
   background-size: cover;
   background-position: center;
   display: flex;
@@ -365,6 +375,7 @@ function showToast(message: string, type = 'success') {
   max-width: 620px;
   color: #fff;
   text-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+  margin-bottom: 2rem;
 }
 
 .eyebrow {
@@ -378,7 +389,7 @@ function showToast(message: string, type = 'success') {
 }
 
 .hero-copy h1 {
-  font-size: clamp(4rem, 15vw, 11rem);
+  font-size: clamp(2.5rem, 8vw, 6rem);
   line-height: 0.85;
   font-weight: 800;
 }

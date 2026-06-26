@@ -110,7 +110,13 @@ async function handleCheckout() {
 
   checkingOut.value = true
   try {
-    await api.post('/checkout')
+    await api.post('/checkout', {
+      items: cartStore.items.map(item => ({
+        product_id: item.id,
+        quantity: item.quantity,
+        price: item.product.price
+      }))
+    })
   } catch {
     // backend not available, proceed locally
   }
