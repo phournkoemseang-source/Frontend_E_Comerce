@@ -344,38 +344,43 @@ function showToast(message: string, type = 'success') {
 }
 
 .hero-shell {
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  border-radius: 0;
-  border-left: none;
-  border-right: none;
+  border-radius: 16px;
   background: var(--lumina-white);
-  border-top: 1px solid var(--lumina-gray-200);
-  border-bottom: 1px solid var(--lumina-gray-200);
+  border: 1px solid var(--lumina-gray-200);
   overflow: hidden;
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  transition: box-shadow 0.3s ease;
+}
+
+.hero-shell:hover {
+  box-shadow: 0 8px 40px rgba(0,0,0,0.10);
 }
 
 .hero-media {
   width: 100%;
-  aspect-ratio: 16 / 9;
-  min-height: auto;
-  background-size: cover;
-  background-position: center;
+  aspect-ratio: 21 / 9;
+  min-height: 320px;
+  max-height: 420px;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #f3f4f6;
   display: flex;
   align-items: end;
-  padding: 2rem;
+  padding: 2.5rem;
+  animation: heroFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: transform 0.4s ease;
+}
+
+.hero-shell:hover .hero-media {
+  transform: scale(1.02);
 }
 
 .hero-copy {
-  max-width: 620px;
+  max-width: 560px;
   color: #fff;
   text-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .eyebrow {
@@ -702,7 +707,7 @@ function showToast(message: string, type = 'success') {
   position: relative;
   min-height: 320px;
   border: 1px solid var(--lumina-gray-200);
-  border-radius: 8px;
+  border-radius: 16px;
   overflow: hidden;
   background: var(--lumina-white);
 }
@@ -778,7 +783,7 @@ function showToast(message: string, type = 'success') {
 }
 
 .newsletter-band {
-  min-height: 190px;
+  min-height: 200px;
   display: flex;
   justify-content: space-between;
   gap: 2rem;
@@ -878,6 +883,15 @@ function showToast(message: string, type = 'success') {
   background: #4B5563;
 }
 
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes slideIn {
   from { transform: translateX(100%); opacity: 0; }
   to { transform: translateX(0); opacity: 1; }
@@ -908,6 +922,15 @@ function showToast(message: string, type = 'success') {
   .products-grid,
   .recommend-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-media {
+    animation: none;
+  }
+  .hero-shell:hover .hero-media {
+    transform: none;
   }
 }
 
